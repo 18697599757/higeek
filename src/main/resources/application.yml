@@ -1,0 +1,26 @@
+#配置数据源的属性
+spring:
+  datasource:
+    druid:
+      driver-class-name: com.mysql.jdbc.Driver
+      url: jdbc:mysql://higeekstudio.cn:3306/db_1024?useUnicode=true&useSSL=false&characterEncoding=utf8
+      username: '1024%'
+      password: '@1024GongZuoShi'
+      max-active: 20
+      max-wait: 5000
+      initial-size: 1
+      validationQuery: SELECT 'x'   #验证连接
+      enable: true
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+
+#配置mybatisplus
+mybatis-plus:
+  mapper-locations:
+    - classpath:mapper/*/*Mapper.xml
+  global-config:
+    db-config:
+      id-type: auto
+    banner: true
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

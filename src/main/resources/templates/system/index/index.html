@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/resources/layui/css/layui.css"  media="all">
+</head>
+<body>
+
+
+<div class="layui-card">
+<div class="layui-progress layui-progress-big" lay-showpercent="true" lay-filter="wd">
+    <div class="layui-progress-bar layui-bg-red" lay-percent="0%"></div>
+</div>
+<div class="layui-progress layui-progress-big" lay-showpercent="true" lay-filter="sd">
+    <div class="layui-progress-bar layui-bg-blue" lay-percent="0%"></div>
+</div>
+</div>
+
+
+
+<script src="/resources/layui/layui.js" charset="utf-8"></script>
+<script>
+
+
+    layui.use('element', function(){
+        var $ = layui.jquery
+            ,element = layui.element; //Tab的切换功能，切换事件监听等，需要依赖element模
+
+
+
+
+        $(function () {
+
+
+
+            get();
+        })
+
+
+
+        function get(){
+
+            setTimeout(get,10000);
+            $.post('/sensor/find',function (res) {
+                console.log(res)
+                var persent=res.data.humidity+"%";
+                var persent1=res.data.temperature+"%";
+                element.progress('wd', persent1)
+                element.progress('sd', persent)
+
+
+            })
+        }
+
+
+    });
+</script>
+
+</body>
+</html>
