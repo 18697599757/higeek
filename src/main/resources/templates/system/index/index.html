@@ -2,60 +2,63 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-    <link rel="stylesheet" href="/resources/layui/css/layui.css"  media="all">
+    <title>808温度管理系统</title>
+    <link href="/resouces/xue-thermometer.css" rel="stylesheet">
+    <script type="application/javascript" src="/resouces/jquery-1.8.0.min.js"></script>
+    <script type="application/javascript" src="/resouces/xue-thermometer.js"></script>
 </head>
 <body>
+<div id="bigbox" style="margin-left: 20%">
+<div id="thermometer" class="xue-thermometer">
 
 
-<div class="layui-card">
-<div class="layui-progress layui-progress-big" lay-showpercent="true" lay-filter="wd">
-    <div class="layui-progress-bar layui-bg-red" lay-percent="0%"></div>
 </div>
-<div class="layui-progress layui-progress-big" lay-showpercent="true" lay-filter="sd">
-    <div class="layui-progress-bar layui-bg-blue" lay-percent="0%"></div>
+<div id="thermometer1" class="xue-thermometer1">
+
+
 </div>
 </div>
 
+<script type="application/javascript">
 
-
-<script src="/resources/layui/layui.js" charset="utf-8"></script>
-<script>
-
-
-    layui.use('element', function(){
-        var $ = layui.jquery
-            ,element = layui.element; //Tab的切换功能，切换事件监听等，需要依赖element模
+    var xueThemometer;
+    var xueThemometer1
 
 
 
-
-        $(function () {
-
-
-
-            get();
-        })
+    $(document).ready(function () {
+        get()
+        $.post('/sensor/find', function (res) {
 
 
-
-        function get(){
-
-            setTimeout(get,10000);
-            $.post('/sensor/find',function (res) {
-                console.log(res)
-                var persent=res.data.humidity+"%";
-                var persent1=res.data.temperature+"%";
-                element.progress('wd', persent1)
-                element.progress('sd', persent)
-
-
-            })
-        }
+                 xueThemometer = $("#thermometer").xueThemometer({
+                    size: 440,
+                    curThermometer: res.data.temperature,
+                    startScale: 0,
+                    endScale: 100,
+                    scaleCount: 6
+                });
+                 xueThemometer1 = $("#thermometer1").xueThemometer({
+                    size: 440,
+                    curThermometer: res.data.humidity,
+                     thermometerSuffix: "%",
+                    startScale: 0,
+                    endScale: 100,
+                    scaleCount: 6
+                });
+            }
+        )
 
 
     });
-</script>
+    function get() {
+        setTimeout(get, 10000)
+        $.post('/sensor/find', function (res) {
+            xueThemometer.data("api").freshThermometer(res.data.temperature);
+            xueThemometer1.data("api").freshThermometer(res.data.humidity);
+        })
 
+    }
+</script>
 </body>
 </html>
